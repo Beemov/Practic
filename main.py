@@ -84,9 +84,10 @@ class Main(QtWidgets.QWidget):
 
         return line
 
+    # TODO: block
     def blockProtocol(self):
         if self.modbusProtocolAscii.isChecked():
-            block
+            pass
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
