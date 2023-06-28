@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QPushButton, QRadioButton, QGridLayout, QLineEdit, QPlainTextEdit
+from PyQt5.QtWidgets import QPushButton, QRadioButton, QGridLayout, QLineEdit, QPlainTextEdit, QCheckBox
 
 
 class Main(QtWidgets.QWidget):
@@ -31,7 +31,13 @@ class Main(QtWidgets.QWidget):
         # self.modbusProtocolEnc = QRadioButton("RTU over TCP")
         # self.modbusProtocolEncIp = QLineEdit()
         # self.modbusProtocolEncIp.setPlaceholderText("192.168.1.10")
-        #
+
+        self.commandR = QCheckBox("-r")
+        self.command_R = QLineEdit()
+        self.command_R.setPlaceholderText("100")
+        self.commandC = QCheckBox("-c")
+        self.command_C = QLineEdit()
+        self.command_C.setPlaceholderText("5")
 
 
         self.generateButton = QPushButton("generate")
@@ -45,8 +51,10 @@ class Main(QtWidgets.QWidget):
         #g_layout.addWidget(self.button, 1, 2)
         # g_layout.addWidget(self.modbusProtocolAscii, 2, 1)
         # g_layout.addWidget(self.modbusProtocolAsciiSerial, 2, 2)
-        # g_layout.addWidget(self.modbusProtocolRtu, 3, 1)
-        # g_layout.addWidget(self.modbusProtocolRtuSerial, 3, 2)
+        g_layout.addWidget(self.commandR, 5, 1)
+        g_layout.addWidget(self.command_R, 5, 2)
+        g_layout.addWidget(self.commandC, 6, 1)
+        g_layout.addWidget(self.command_C, 6, 2)
         g_layout.addWidget(self.modbusProtocolTcp, 4, 1)
         g_layout.addWidget(self.modbusProtocolTcpIp, 4, 2)
         # g_layout.addWidget(self.modbusProtocolUdp, 5, 1)
@@ -59,7 +67,7 @@ class Main(QtWidgets.QWidget):
         self.show()
 
     def generateCommandLine(self):
-        line = "modpoll " + self.generateModbusProtocol()
+        line = "modpoll " + self.generateCommands() + self.generateModbusProtocol()
 
         self.commandLine.insertPlainText(line)
         pass
@@ -85,6 +93,20 @@ class Main(QtWidgets.QWidget):
             line = line + "-m tcp " + self.modbusProtocolTcpIp.text() + "\n"
 
         return line
+
+    def generateCommands (self):
+        line = ""
+        if self.commandC.isChecked():
+            if not self.command_C.text():
+                self.command_C.setText("5")
+            line = line + "-c " + self.command_C.text() + " "
+        if self.commandR.isChecked():
+            if not self.command_R.text():
+                self.command_R.setText("100")
+            line = line + "-r " + self.command_R.text() + " "
+        return line
+
+
 
     # TODO: block
     # def blockProtocol(self):
