@@ -46,7 +46,7 @@ class Main(QtWidgets.QWidget):
         self.generateButton.clicked.connect(self.insertCommandLine)
 
         self.StartButton = QPushButton("start")
-        self.StartButton.clicked.connect(self.Sub)
+        self.StartButton.clicked.connect(self.Modpoll)
 
         self.commandLine = QPlainTextEdit()
         self.commandLine.setPlaceholderText("modpoll ...")
@@ -114,9 +114,10 @@ class Main(QtWidgets.QWidget):
             line = line + "-r " + self.command_R.text() + " "
         return line
 
-    def Sub(self):
-        print("Собираюсь")
-        code = subprocess.run("D:\win\modpoll.exe")
+    # todo: запустить modpoll и передать в него команду
+    # def Modpoll(self):
+    #     line = self.generateCommandLine() - "\n"
+    #     subprocess.Popen(["D:\win\modpoll.exe","-r 100", "-c 5", "-m tcp"])
 
 
 
@@ -126,6 +127,7 @@ class Main(QtWidgets.QWidget):
     #         pass
 
 if __name__ == "__main__":
+    subprocess.Popen("D:\win\diagslave.exe")
     app = QtWidgets.QApplication(sys.argv)
     game = Main()
     sys.exit(app.exec_())
