@@ -115,9 +115,8 @@ class Main(QtWidgets.QWidget):
         return line
 
     # todo: запустить modpoll и передать в него команду
-    # def Modpoll(self):
-    #     line = self.generateCommandLine() - "\n"
-    #     subprocess.Popen(["D:\win\modpoll.exe","-r 100", "-c 5", "-m tcp"])
+    def Modpoll(self):
+        subprocess.Popen(["D:\win\modpoll.exe",'self.generateCommandLine()'])
 
 
 
