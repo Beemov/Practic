@@ -43,10 +43,10 @@ class Main(QtWidgets.QWidget):
 
 
         self.generateButton = QPushButton("generate")
-        self.generateButton.clicked.connect(self.generateCommandLine)
+        self.generateButton.clicked.connect(self.insertCommandLine)
 
         self.StartButton = QPushButton("start")
-        self.generateButton.clicked.connect(subprocess.Sub())
+        self.StartButton.clicked.connect(self.Sub)
 
         self.commandLine = QPlainTextEdit()
         self.commandLine.setPlaceholderText("modpoll ...")
@@ -72,11 +72,13 @@ class Main(QtWidgets.QWidget):
 
         self.show()
 
+    def insertCommandLine(self):
+        self.commandLine.insertPlainText(self.generateCommandLine())
+        pass
     def generateCommandLine(self):
-        line = "modpoll " + self.generateCommands() + self.generateModbusProtocol()
-
-        self.commandLine.insertPlainText(line)
+        line = "modpoll " + self.generateCommands() + self.generateModbusProtocol() + "\n"
         return line
+
 
     def generateModbusProtocol(self):
         line = ""
@@ -112,12 +114,10 @@ class Main(QtWidgets.QWidget):
             line = line + "-r " + self.command_R.text() + " "
         return line
 
-    def Sub(subprocess):
-        code = subprocess.call("cmd.exe")
-        if code == 0:
-            print("Success!")
-        else:
-            print("Error!")
+    def Sub(self):
+        print("Собираюсь")
+        code = subprocess.run("D:\win\modpoll.exe")
+
 
 
     # TODO: block
