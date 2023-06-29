@@ -120,10 +120,7 @@ class Main(QtWidgets.QWidget):
 
 
 
-    # TODO: block
-    # def blockProtocol(self):
-    #     if self.modbusProtocolAscii.isChecked():
-    #         pass
+
 
 if __name__ == "__main__":
     subprocess.Popen("D:\win\diagslave.exe")
