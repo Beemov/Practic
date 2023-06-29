@@ -1,4 +1,6 @@
 import sys
+import subprocess
+
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QPushButton, QRadioButton, QGridLayout, QLineEdit, QPlainTextEdit, QCheckBox
 
@@ -43,6 +45,9 @@ class Main(QtWidgets.QWidget):
         self.generateButton = QPushButton("generate")
         self.generateButton.clicked.connect(self.generateCommandLine)
 
+        self.StartButton = QPushButton("start")
+        self.generateButton.clicked.connect(subprocess.Sub())
+
         self.commandLine = QPlainTextEdit()
         self.commandLine.setPlaceholderText("modpoll ...")
         self.commandLine.setReadOnly(True)
@@ -62,6 +67,7 @@ class Main(QtWidgets.QWidget):
         # g_layout.addWidget(self.modbusProtocolEnc, 6, 1)
         # g_layout.addWidget(self.modbusProtocolEncIp, 6, 2)
         g_layout.addWidget(self.generateButton, 7, 1)
+        g_layout.addWidget(self.StartButton, 7, 2)
         g_layout.addWidget(self.commandLine, 8, 1, 2, 2)
 
         self.show()
@@ -70,7 +76,7 @@ class Main(QtWidgets.QWidget):
         line = "modpoll " + self.generateCommands() + self.generateModbusProtocol()
 
         self.commandLine.insertPlainText(line)
-        pass
+        return line
 
     def generateModbusProtocol(self):
         line = ""
@@ -106,6 +112,12 @@ class Main(QtWidgets.QWidget):
             line = line + "-r " + self.command_R.text() + " "
         return line
 
+    def Sub(subprocess):
+        code = subprocess.call("cmd.exe")
+        if code == 0:
+            print("Success!")
+        else:
+            print("Error!")
 
 
     # TODO: block
