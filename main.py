@@ -13,7 +13,7 @@ class Main(QtWidgets.QWidget):
         # self.resize(int(cfg.get("Window", "width")), int(cfg.get("Window", "height")))
         center_point = QtWidgets.QDesktopWidget().availableGeometry().center()
 
-        #self.button = QPushButton("Push")
+        # self.button = QPushButton("Push")
         # TODO: remove push button
         # self.button.clicked.connect(self.set_rbutton)
 
@@ -41,19 +41,18 @@ class Main(QtWidgets.QWidget):
         self.command_C = QLineEdit()
         self.command_C.setPlaceholderText("5")
 
-
         self.generateButton = QPushButton("generate")
         self.generateButton.clicked.connect(self.insertCommandLine)
 
         self.StartButton = QPushButton("start")
-        self.StartButton.clicked.connect(self.Modpoll)
+        self.StartButton.clicked.connect(self.insertResult)
 
         self.commandLine = QPlainTextEdit()
         self.commandLine.setPlaceholderText("modpoll ...")
         self.commandLine.setReadOnly(True)
 
         g_layout = QGridLayout(self)
-        #g_layout.addWidget(self.button, 1, 2)
+        # g_layout.addWidget(self.button, 1, 2)
         # g_layout.addWidget(self.modbusProtocolAscii, 2, 1)
         # g_layout.addWidget(self.modbusProtocolAsciiSerial, 2, 2)
         g_layout.addWidget(self.commandR, 5, 1)
@@ -73,7 +72,7 @@ class Main(QtWidgets.QWidget):
         self.show()
 
     def insertCommandLine(self):
-        line =  "modpoll " + self.generateCommandLine()
+        line = "modpoll " + self.generateCommandLine()
         self.commandLine.insertPlainText(line)
         # self.insertResultinLine()
         pass
@@ -87,7 +86,6 @@ class Main(QtWidgets.QWidget):
         line = self.generateCommands() + self.generateModbusProtocol() + "\n"
         return line
 
-
     def generateModbusProtocol(self):
         line = ""
         i = 0
@@ -96,7 +94,7 @@ class Main(QtWidgets.QWidget):
         # if self.modbusProtocolRtu.isChecked():
         #     line = line + "-m rtu " + self.modbusProtocolTcpIp.text() + "\n"
         if self.modbusProtocolTcp.isChecked():
-            i+=1
+            i += 1
             if not self.modbusProtocolTcpIp.text():
                 self.modbusProtocolTcpIp.setText("127.0.0.1")
             line = line + "-m tcp " + self.modbusProtocolTcpIp.text() + "\n"
@@ -104,13 +102,13 @@ class Main(QtWidgets.QWidget):
         #     line = line + "-m udp " + self.modbusProtocolTcpIp.text() + "\n"
         # if self.modbusProtocolEnc.isChecked():
         #     line = line + "-m enc " + self.modbusProtocolTcpIp.text() + "\n"
-        if i != 1 :
+        if i != 1:
             self.modbusProtocolTcpIp.setText("127.0.0.1")
             line = line + "-m tcp " + self.modbusProtocolTcpIp.text() + "\n"
 
         return line
 
-    def generateCommands (self):
+    def generateCommands(self):
         line = ""
         if self.commandC.isChecked():
             if not self.command_C.text():
@@ -125,22 +123,26 @@ class Main(QtWidgets.QWidget):
 
     # todo: запустить modpoll и передать в него команду
     def Modpoll(self):
+        i = 0
         # subprocess.Popen(["D:\win\modpoll.exe",'self.generateCommandLine()'])
         # print(subprocess.check_output(["D:\win\modpoll.exe", self.generateCommandLine()]))
         args = self.generateCommandLine().split()
         cmd = ['D:\win\modpoll.exe']
         cmd = cmd + args
-        res = subprocess.check_output(cmd).splitline()
+        res = subprocess.check_output(cmd).splitlines()
         # subprocess.Popen.kill(cmd)
-        print(res)
-        #self.commandLine.insertPlainText(res)
-        self.commandLine.update(res)
+        # print(res)
+        # self.commandLine.insertPlainText(res)
+        return res
+
+    def insertResult(self):
+        i = 0
+        result = self.Modpoll()
+        while i <= len(result):
+            print(result[i])
+            #self.commandLine.insertPlainText(result[i])
+            i += 1
         pass
-
-
-
-
-
 
 if __name__ == "__main__":
     p = subprocess.Popen("D:\win\diagslave.exe")
