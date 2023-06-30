@@ -73,10 +73,18 @@ class Main(QtWidgets.QWidget):
         self.show()
 
     def insertCommandLine(self):
-        self.commandLine.insertPlainText(self.generateCommandLine())
+        line =  "modpoll " + self.generateCommandLine()
+        self.commandLine.insertPlainText(line)
+        # self.insertResultinLine()
         pass
+
+    # def insertResultinLine(self):
+    #     res = self.Modpoll()
+    #     self.commandLine.insertPlainText(res)
+    #     pass
+
     def generateCommandLine(self):
-        line = "modpoll " + self.generateCommands() + self.generateModbusProtocol() + "\n"
+        line = self.generateCommands() + self.generateModbusProtocol() + "\n"
         return line
 
 
@@ -122,8 +130,14 @@ class Main(QtWidgets.QWidget):
         args = self.generateCommandLine().split()
         cmd = ['D:\win\modpoll.exe']
         cmd = cmd + args
-        res = subprocess.check_output(cmd).splitlines()
+        res = subprocess.check_output(cmd).splitline()
+        # subprocess.Popen.kill(cmd)
         print(res)
+        #self.commandLine.insertPlainText(res)
+        self.commandLine.update(res)
+        pass
+
+
 
 
 
