@@ -112,18 +112,25 @@ class Main(QtWidgets.QWidget):
             if not self.command_R.text():
                 self.command_R.setText("100")
             line = line + "-r " + self.command_R.text() + " "
+        line = line + "-1 "
         return line
 
     # todo: запустить modpoll и передать в него команду
     def Modpoll(self):
-        subprocess.Popen(["D:\win\modpoll.exe",'self.generateCommandLine()'])
-
+        # subprocess.Popen(["D:\win\modpoll.exe",'self.generateCommandLine()'])
+        # print(subprocess.check_output(["D:\win\modpoll.exe", self.generateCommandLine()]))
+        args = self.generateCommandLine().split()
+        cmd = ['D:\win\modpoll.exe']
+        cmd = cmd + args
+        res = subprocess.check_output(cmd).splitlines()
+        print(res)
 
 
 
 
 if __name__ == "__main__":
-    subprocess.Popen("D:\win\diagslave.exe")
+    p = subprocess.Popen("D:\win\diagslave.exe")
     app = QtWidgets.QApplication(sys.argv)
     game = Main()
     sys.exit(app.exec_())
+    subprocess.Popen.kill(p)
