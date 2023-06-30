@@ -34,6 +34,12 @@ class Main(QtWidgets.QWidget):
         # self.modbusProtocolEncIp = QLineEdit()
         # self.modbusProtocolEncIp.setPlaceholderText("192.168.1.10")
 
+        # self.pathtoM = "path to modpoll"
+        # self.pathtoModpoll.setPlaceholderText('D:\win\modpoll.exe')
+        # self.pathtoModpoll = QLineEdit()
+        # self.pathtoD = "path to diagslave"
+        # self.pathtoDiagslave.setPlaceholderText("D:\win\diagslave.exe")
+        # self.pathtoDiagslave = QLineEdit()
         self.commandR = QCheckBox("-r")
         self.command_R = QLineEdit()
         self.command_R.setPlaceholderText("100")
@@ -52,8 +58,10 @@ class Main(QtWidgets.QWidget):
         self.commandLine.setReadOnly(True)
 
         g_layout = QGridLayout(self)
-        # g_layout.addWidget(self.button, 1, 2)
-        # g_layout.addWidget(self.modbusProtocolAscii, 2, 1)
+        # g_layout.addWidget(self.pathtoM, 1, 1)
+        # g_layout.addWidget(self.pathtoModpoll, 1, 2)
+        # g_layout.addWidget(self.pathtoD, 2, 1)
+        # g_layout.addWidget(self.pathtoDiagslave, 2, 2)
         # g_layout.addWidget(self.modbusProtocolAsciiSerial, 2, 2)
         g_layout.addWidget(self.commandR, 5, 1)
         g_layout.addWidget(self.command_R, 5, 2)
@@ -133,6 +141,7 @@ class Main(QtWidgets.QWidget):
         # subprocess.Popen.kill(cmd)
         # print(res)
         # self.commandLine.insertPlainText(res)
+        # subprocess.check_output.kill(cmd)
         return res
 
     def insertResult(self):
@@ -140,8 +149,9 @@ class Main(QtWidgets.QWidget):
         result = self.Modpoll()
         while i <= len(result):
             print(result[i])
-            #self.commandLine.insertPlainText(result[i])
+            # self.commandLine.setPlainText(result[i])
             i += 1
+
         pass
 
 if __name__ == "__main__":
