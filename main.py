@@ -1,3 +1,4 @@
+import base64
 import sys
 import subprocess
 
@@ -137,20 +138,16 @@ class Main(QtWidgets.QWidget):
         args = self.generateCommandLine().split()
         cmd = ['D:\win\modpoll.exe']
         cmd = cmd + args
-        res = subprocess.check_output(cmd).splitlines()
-        # subprocess.Popen.kill(cmd)
-        # print(res)
-        # self.commandLine.insertPlainText(res)
-        # subprocess.check_output.kill(cmd)
+        res = subprocess.check_output(cmd)
+        res = res.decode('UTF-8')
+        res.splitlines()
         return res
 
+
     def insertResult(self):
-        i = 0
         result = self.Modpoll()
-        while i <= len(result):
-            print(result[i])
-            # self.commandLine.setPlainText(result[i])
-            i += 1
+        self.commandLine.setPlainText(result)
+
 
         pass
 
