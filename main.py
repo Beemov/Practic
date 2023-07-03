@@ -3,7 +3,7 @@ import sys
 import subprocess
 
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QPushButton, QRadioButton, QGridLayout, QLineEdit, QPlainTextEdit, QCheckBox
+from PyQt5.QtWidgets import QPushButton, QRadioButton, QLabel, QGridLayout, QLineEdit, QPlainTextEdit, QCheckBox
 
 
 class Main(QtWidgets.QWidget):
@@ -35,12 +35,12 @@ class Main(QtWidgets.QWidget):
         # self.modbusProtocolEncIp = QLineEdit()
         # self.modbusProtocolEncIp.setPlaceholderText("192.168.1.10")
 
-        # self.pathtoM = "path to modpoll"
-        # self.pathtoModpoll.setPlaceholderText('D:\win\modpoll.exe')
-        # self.pathtoModpoll = QLineEdit()
-        # self.pathtoD = "path to diagslave"
-        # self.pathtoDiagslave.setPlaceholderText("D:\win\diagslave.exe")
-        # self.pathtoDiagslave = QLineEdit()
+        self.pathtoM = QLabel("path to modpoll")
+        self.pathtoModpoll = QLineEdit()
+        self.pathtoModpoll.setPlaceholderText("D:\win\modpoll.exe")
+        self.pathtoD = QLabel("path to diagslave")
+        self.pathtoDiagslave = QLineEdit()
+        self.pathtoDiagslave.setPlaceholderText("D:\win\diagslave.exe")
         self.commandR = QCheckBox("-r")
         self.command_R = QLineEdit()
         self.command_R.setPlaceholderText("100")
@@ -59,10 +59,10 @@ class Main(QtWidgets.QWidget):
         self.commandLine.setReadOnly(True)
 
         g_layout = QGridLayout(self)
-        # g_layout.addWidget(self.pathtoM, 1, 1)
-        # g_layout.addWidget(self.pathtoModpoll, 1, 2)
-        # g_layout.addWidget(self.pathtoD, 2, 1)
-        # g_layout.addWidget(self.pathtoDiagslave, 2, 2)
+        g_layout.addWidget(self.pathtoM, 1, 1)
+        g_layout.addWidget(self.pathtoModpoll, 1, 2)
+        g_layout.addWidget(self.pathtoD, 2, 1)
+        g_layout.addWidget(self.pathtoDiagslave, 2, 2)
         # g_layout.addWidget(self.modbusProtocolAsciiSerial, 2, 2)
         g_layout.addWidget(self.commandR, 5, 1)
         g_layout.addWidget(self.command_R, 5, 2)
@@ -132,11 +132,12 @@ class Main(QtWidgets.QWidget):
 
     # todo: запустить modpoll и передать в него команду
     def Modpoll(self):
-        i = 0
-        # subprocess.Popen(["D:\win\modpoll.exe",'self.generateCommandLine()'])
-        # print(subprocess.check_output(["D:\win\modpoll.exe", self.generateCommandLine()]))
+        d = self.pathtoDiagslave()
+        print(d)
+        p = subprocess.Popen(d)
         args = self.generateCommandLine().split()
-        cmd = ['D:\win\modpoll.exe']
+        cmd = [self.pathtoModpoll()]
+        print(cmd)
         cmd = cmd + args
         res = subprocess.check_output(cmd)
         res = res.decode('UTF-8')
@@ -152,7 +153,6 @@ class Main(QtWidgets.QWidget):
         pass
 
 if __name__ == "__main__":
-    p = subprocess.Popen("D:\win\diagslave.exe")
     app = QtWidgets.QApplication(sys.argv)
     game = Main()
     sys.exit(app.exec_())
