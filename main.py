@@ -1,3 +1,4 @@
+import atexit
 import base64
 import sys
 import subprocess
@@ -10,15 +11,8 @@ class Main(QtWidgets.QWidget):
 
     def __init__(self):
         super(Main, self).__init__()
-        # self.setMinimumSize(int(cfg.get("Appearance", "min.width")), int(cfg.get("Appearance", "min.height")))
-        # self.resize(int(cfg.get("Window", "width")), int(cfg.get("Window", "height")))
         center_point = QtWidgets.QDesktopWidget().availableGeometry().center()
 
-        # self.button = QPushButton("Push")
-        # TODO: remove push button
-        # self.button.clicked.connect(self.set_rbutton)
-
-        # TODO: enable line edit on radio button change
         # self.modbusProtocolAscii = QRadioButton("ASCII")
         # self.modbusProtocolAsciiSerial = QLineEdit()
         # self.modbusProtocolAsciiSerial.setPlaceholderText("COM1:")
@@ -36,11 +30,11 @@ class Main(QtWidgets.QWidget):
         # self.modbusProtocolEncIp.setPlaceholderText("192.168.1.10")
 
         self.pathtoM = QLabel("path to modpoll")
-        self.pathtoModpoll = QLineEdit()
+        self.pathtoModpoll = QLineEdit("D:\win\modpoll.exe")
         self.pathtoModpoll.setPlaceholderText("D:\win\modpoll.exe")
-        self.pathtoD = QLabel("path to diagslave")
-        self.pathtoDiagslave = QLineEdit()
-        self.pathtoDiagslave.setPlaceholderText("D:\win\diagslave.exe")
+        # self.pathtoD = QLabel("path to diagslave")
+        # self.pathtoDiagslave = QLineEdit("D:\win\diagslave.exe")
+        # self.pathtoDiagslave.setPlaceholderText("D:\win\diagslave.exe")
         self.commandR = QCheckBox("-r")
         self.command_R = QLineEdit()
         self.command_R.setPlaceholderText("100")
@@ -61,8 +55,8 @@ class Main(QtWidgets.QWidget):
         g_layout = QGridLayout(self)
         g_layout.addWidget(self.pathtoM, 1, 1)
         g_layout.addWidget(self.pathtoModpoll, 1, 2)
-        g_layout.addWidget(self.pathtoD, 2, 1)
-        g_layout.addWidget(self.pathtoDiagslave, 2, 2)
+        # g_layout.addWidget(self.pathtoD, 2, 1)
+        # g_layout.addWidget(self.pathtoDiagslave, 2, 2)
         # g_layout.addWidget(self.modbusProtocolAsciiSerial, 2, 2)
         g_layout.addWidget(self.commandR, 5, 1)
         g_layout.addWidget(self.command_R, 5, 2)
@@ -86,10 +80,6 @@ class Main(QtWidgets.QWidget):
         # self.insertResultinLine()
         pass
 
-    # def insertResultinLine(self):
-    #     res = self.Modpoll()
-    #     self.commandLine.insertPlainText(res)
-    #     pass
 
     def generateCommandLine(self):
         line = self.generateCommands() + self.generateModbusProtocol() + "\n"
@@ -119,25 +109,23 @@ class Main(QtWidgets.QWidget):
 
     def generateCommands(self):
         line = ""
+        i = 0
         if self.commandC.isChecked():
+            i += 1
             if not self.command_C.text():
                 self.command_C.setText("5")
             line = line + "-c " + self.command_C.text() + " "
         if self.commandR.isChecked():
+            i += 1
             if not self.command_R.text():
                 self.command_R.setText("100")
             line = line + "-r " + self.command_R.text() + " "
         line = line + "-1 "
         return line
 
-    # todo: запустить modpoll и передать в него команду
     def Modpoll(self):
-        d = self.pathtoDiagslave()
-        print(d)
-        p = subprocess.Popen(d)
         args = self.generateCommandLine().split()
-        cmd = [self.pathtoModpoll()]
-        print(cmd)
+        cmd = [self.pathtoModpoll.text()]
         cmd = cmd + args
         res = subprocess.check_output(cmd)
         res = res.decode('UTF-8')
@@ -148,12 +136,12 @@ class Main(QtWidgets.QWidget):
     def insertResult(self):
         result = self.Modpoll()
         self.commandLine.setPlainText(result)
-
-
         pass
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     game = Main()
+    p = subprocess.Popen("D:\win\diagslave.exe")
+    atexit.register(subprocess.Popen.kill, p)
     sys.exit(app.exec_())
-    subprocess.Popen.kill(p)
+
